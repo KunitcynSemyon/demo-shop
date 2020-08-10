@@ -1,0 +1,26 @@
+<!--Шаблон деталей товара-->
+
+{% extends "webstore/base_generic.html" %}
+{% load static %}
+{% block title %}
+    {% if product %}{{ product.name }}{% else %}Товар{% endif %}
+{% endblock %}
+{% block content %}
+    <div>
+        <h1>{{ product.name }}</h1>
+        <img src = "{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}">
+        <h2><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h2>
+
+        <p class = "price">{{ product.price }} P</p>
+        <form action="{% url 'basket:basket_add' product.id %}" method="post">
+            {{ basket_product_form }}
+            {% csrf_token %}
+        <input type="submit" value="Добавить в корзину">
+        </form>
+        
+        <div>
+            {{ product.description|linebreaks }}
+        </div>
+        <p>В наличии: {{ product.stock }}</p>
+    </div>
+{% endblock %}

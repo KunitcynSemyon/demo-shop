@@ -1,0 +1,31 @@
+<!--Шаблон списка товаров-->
+
+{% extends "webstore/base_generic.html" %}
+{% load static %}
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}WEBStore{% endif %}
+{% endblock %}
+{% block content %}
+    <div class="card mb-3" style="max-width: 740px;">
+        {% for product in products %}
+        <div class="row no-gutters">
+          <div class="col-md-4">
+            <a href="{{ product.get_absolute_url }}">
+                <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="card-img">
+            </a>
+            </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <p class="card-text"></p>{{ product.specifications|linebreaks }}
+              <p>{{ product.price }} P</p>
+              <p class="card-text"><small class="text-muted">Добавлено</small></p>
+              <a href="{{ product.get_absolute_url }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Подробнее</a>
+              <a href="#" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Кнопка</a>
+
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+{% endblock %}

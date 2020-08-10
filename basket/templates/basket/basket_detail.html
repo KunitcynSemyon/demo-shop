@@ -1,0 +1,52 @@
+{% extends "webstore/base_generic.html" %}
+{% load static %}
+{% block title %}
+    Корзина
+{% endblock %}
+{% block content %}
+    <h1>Ваша корзина</h1>
+    <table class="basket">
+        <thead>
+        <tr>
+            <th>Картинка</th>
+            <th>Товар</th>
+            <th>Кол-во</th>
+            <th>Удалить</th>
+            <th>Цена за шт.</th>
+            <th>Цена</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in basket %}
+            {% with product=item.product %}
+                <tr>
+                    <td>
+                        <a href="{{ product.get_absolute_url }}">
+                            <img src="
+                                {% if product.image %}
+                                    {{ product.image.url }}
+                                {% else %}
+                                    {% static 'img/no_image.png' %}
+                                {% endif %}">
+                        </a>
+                    </td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td><a href="{% url 'basket:basket_remove' product.id %}">Удалить</a></td>
+                    <td class="num">{{ item.price }} P</td>
+                    <td class="num">{{ item.total_price }} P</td>
+                </tr>
+            {% endwith %}
+        {% endfor %}
+        <tr class="total">
+            <td>Итого</td>
+            <td colspan="4"></td>
+            <td class="num">{{ basket.get_total_price }} P</td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="text-right">
+        <a href="{% url 'webstore:product_list' %}" class="button light">На главную</a>
+        <a href="#" class="button">Кнопка</a>
+    </p>
+{% endblock %}
